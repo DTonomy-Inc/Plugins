@@ -1,8 +1,6 @@
-# What is this used for?
-```
-It's a node to help users get ASN information when they enter IP address. 
+# node-red-node-asn
+[Node-RED](https://nodered.org/) nodes to help users get ASN information when they enter IP address. 
 Address needs to be an IPv4 or IPv6 format.
-```
 
 # Example
 ```
@@ -22,5 +20,8 @@ Output:
 
 # Installation
 ```
-npm i asn_information
+npm i node-red-node-asn
 ```
+
+# Website
+https://www.dtonomy.com/
