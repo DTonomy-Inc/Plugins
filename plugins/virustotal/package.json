@@ -1,0 +1,21 @@
+{
+  "name": "node-red-node-virustotal",
+  "version": "1.0.4",
+  "description": "",
+  "node-red" : {
+        "nodes": {
+            "check url": "checkUrl.js",
+            "check domain": "checkDomain.js",
+            "check ip": "checkIp.js",
+            "check file": "checkFile.js",
+            "virusTotalServer": "virusTotalServer.js"
+        }
+    },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords":["node-red"],
+  "homepage": "https://www.dtonomy.com/"
+}

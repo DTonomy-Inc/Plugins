@@ -1,0 +1,105 @@
+<!--
+  Copyright JS Foundation and other contributors, http://js.foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<script type="text/x-red" data-template-name="scan url to file">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i>Name</label>
+        <input type="text" id="node-input-name" placeholder="Scan URL to File">
+    </div>
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i>Server</label>
+        <input type="text" id="node-input-server" placeholder="Server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-url"><i class="fa fa-globe"></i>URL</label>
+        <input type="text" id="node-input-url" placeholder="URL">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="scan url to file">
+    <p>Scan url to a file via Hybrid Analysis.</p>
+    <h3>Inputs</h3>
+        <dl class="message-properties">
+            <dt>payload<span class="property-type">object</span></dt>
+            <dd>example:</dd><br>
+            <pre>  
+"url" : "https://www.google.com/webhp?hl=en&sa=X&ved=0ahUKEwj4jv61uerlAhVvdt8KHfvkCzgQPAgH"    
+            </pre>
+        </dl> 
+
+    <h3>Output</h3> 
+        <dl class="message-properties">
+            <dd>It contains the VirusTotal and Falcon Sandbox reports info for the given link to file.</dd>    
+            <pre>  
+{
+     ...
+ "scanners":[
+    {
+        "name":"VirusTotal",
+        "status":"clean",
+     ...
+        },
+    {
+        "name":"Metadefender",
+     ...
+        },
+    {
+        "name":"CrowdStrike Falcon Static Analysis (ML)",
+     ...
+        }],
+ "whitelist":[
+        {
+            "id":"internal",
+            "value":false
+            }
+                 ],
+ "reports":["xxx"],
+ "finished":true}
+            </pre>           
+        </dl>
+
+
+    <h3>Other Information</h3> 
+        <dl class="message-properties">
+            <dd>For more information about hybrid analysis API-key and APIs, please visit: https://www.hybrid-analysis.com/docs/api/v2.</dd>    
+        </dl>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('scan url to file', {
+        category: 'hybridanalysis',
+        color: "#E6E0F8",
+        defaults: {
+            name: { value: "" },
+            server: {
+                value: "",
+                type: "falcon-sandbox-server",
+                required: true
+            },
+            url: {
+                value: ""
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "hybridanalysis.png",
+        label: function () {
+            return this.name || "scan url to file";
+        },
+        labelStyle: function () {
+            return this.name ? "node_label_italic" : "";
+        }
+    });
+</script>
