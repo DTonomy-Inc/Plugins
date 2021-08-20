@@ -1,0 +1,22 @@
+{
+  "name": "node-red-node-anyrun",
+  "version": "1.0.4",
+  "description": "",
+  "main": "index.js",
+  "node-red": {
+    "nodes": {
+      "anyrun server": "anyrunServer.js",
+      "get history": "getHistory.js"
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [
+    "node-red",
+    "malware"
+  ],
+  "homepage": "https://www.dtonomy.com/"
+}

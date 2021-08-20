@@ -1,0 +1,99 @@
+<!--
+  Copyright JS Foundation and other contributors, http://js.foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<script type="text/x-red" data-template-name="resolve signals">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
+        <input type="text" id="node-input-server" placeholder="Server">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-ESQueryBody"><i class="fa fa-envelope"></i> Query Body</label>
+        <input type="text" id="node-input-ESQueryBody" style="width:70%">
+    </div>
+    </div>
+
+</script>
+
+<script type="text/x-red" data-help-name="resolve signals">
+    <p>Resolve signals from elastic security.</p>
+        <dd>Elastic-server entries: "Elasticsearch Cluster Endpoint", "Username" and "Password" can only be configured in the node</dd>
+        <br>
+        <dd>"Query Body" can be configured using msg.ESQueryBody or using node itself</dd>
+        <dd>Example:</dd>
+        <dl class="message-properties">
+            <dt>msg.ESQueryBody<span class="property-type">object</span></dt>
+            <dd>The input can be set from the previous node or can be configured within the node itself.</dd>
+            <dd> <code>signal_ids</code> is an array which can have a list of ids that needs to be resolved. </dd>
+            <dd> <code>status</code> can have values "closed" or "open". </dd>
+    <pre>{
+"signal_ids": [
+"6cf29caf241eb0c73b935d166df05145bb18bdce2361051d31789335f6da4507"
+],
+"status": "closed"
+}
+    </pre>
+         </dl>
+         <h3>Output</h3> 
+         <dl class="message-properties">
+             <dd>It would return the signal detections.</dd>  
+ 
+ <h3>API documentation</h3> 
+         <dl class="message-properties">
+             <dd><a href="https://www.elastic.co/guide/en/siem/guide/current/signals-api-overview.html">Elastic Signal API</a></dd><br>  
+         </dl>
+
+</script>
+
+
+<script type="text/javascript">
+    RED.nodes.registerType('resolve signals', {
+        category: 'elastic security-function',
+        color: "#E6E0F8",
+        defaults: {
+            name: {
+                value: ""
+            },
+            server: {
+                value: "",
+                type: "elastic security-server",
+                required: true
+            },
+            ESQueryBody: {
+                value: "",
+                validate: RED.validators.typedInput("payloadType")
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "elastic.png",
+        label: function () {
+            return this.name || "resolve signals";
+        },
+        labelStyle: function () {
+            return this.name ? "node_label_italic" : "";
+        },
+        oneditprepare: function () {
+            $("#node-input-ESQueryBody").typedInput({
+                types: ["json"]
+            });
+        }
+    });
+</script>

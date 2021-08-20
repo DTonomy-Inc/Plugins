@@ -1,0 +1,94 @@
+<!--
+  Copyright JS Foundation and other contributors, http://js.foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<script type="text/x-red" data-template-name="shodan check ip">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i>Name</label>
+        <input type="text" id="node-input-name" placeholder="Shodan check IP">
+    </div>
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i>Server</label>
+        <input type="text" id="node-input-server" placeholder="Server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-input"><i class="fa fa-random"></i> Input</label>
+        <input type="text" id="node-input-input" placeholder="payload">
+    </div>
+    <div class="form-row">
+        <label for="node-input-output"><i class="fa fa-random"></i> Output</label>
+        <input type="text" id="node-input-output" placeholder="e.g. result">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="shodan check ip">
+    <p>Check IP via Shodan.</p>
+    
+    <h3>Inputs</h3>
+        <dl class="message-properties">
+            <dt>input<span class="property-type">object</span></dt>
+            <dd>The name of the field with the the IP address that will be checked using Shodan.</dd> 
+            <dd>eg. for a single IP:</dd>
+            <pre>msg.payload = '172.16.18.44';</pre>
+            <dd>eg. for multiple IPs:</dd>
+            <pre>msg.payload = ['172.16.18.44', '192.42.33.155'];</pre>
+            <dt>output<span class="property-type">object</span></dt>
+            <dd>The name of the field where the Shodan result will be stored.</dd>
+        </dl>
+
+    <h3>Output</h3> 
+        <dl class="message-properties">
+            <dd>It contains the Shodan result for the given IP.</dd>    
+        </dl>
+
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('shodan check ip', {
+        category: 'shodan-function',
+        color: "#E6E0F8",
+        defaults: {
+            name: { 
+                value: "" 
+            },
+            server: {
+                value: "",
+                type: "shodan-server",
+                required: true
+            },
+            ip: {
+                value: ""
+            },
+            input: {
+              value: "payload"
+            },
+            output: {
+              value: ""
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "shodan.png",
+        label: function () {
+            return this.name || "shodan check ip";
+        },
+        labelStyle: function () {
+            return this.name ? "node_label_italic" : "";
+        },
+        oneditprepare: function () {
+            $("#node-input-input").typedInput({default:this.propertyType||'msg',types:['msg']});
+            $("#node-input-output").typedInput({default:this.propertyType||'msg',types:['msg']});
+        }
+    });
+</script>

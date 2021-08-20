@@ -1,0 +1,122 @@
+<!--
+  Copyright JS Foundation and other contributors, http://js.foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<script type="text/x-red" data-template-name="scan file">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i>Name</label>
+        <input type="text" id="node-input-name" placeholder="Scan File">
+    </div>
+    <div class="form-row">
+        <label for="node-input-input"><i class="fa fa-random"></i> Input</label>
+        <input style="width:auto;" type="text" id="node-input-input" placeholder="">
+    </div>
+    <div class="form-row">
+        <label for="node-input-output"><i class="fa fa-random"></i> Output</label>
+        <input style="width:auto;" type="text" id="node-input-output" placeholder="">
+    </div>
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i>Server</label>
+        <input type="text" id="node-input-server" placeholder="Server">
+    </div>
+    <div class="form-row">
+        <input type="checkbox" id="node-input-deep_scan" style="display: inline-block; width: auto; vertical-align: top;">
+        <label style="width: auto;" for="node-input-deep_scan"><span>Perform deep scan</span></label></input>
+    </div>
+    <div class="form-row">
+        <input type="checkbox" id="node-input-simplified_output" style="display: inline-block; width: auto; vertical-align: top;">
+        <label style="width: auto;" for="node-input-simplified_output"><span>Simplify output</span></label></input>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="scan file">
+    <p>Scan file via Hybrid Analysis.</p>
+    <h3>Inputs</h3>
+    <p>Input can be specified in <code>msg.payload</code> or specified in the input field. It can accept a list of byte stream or a single file in bytes. </p>
+        <p>Selecting perform deep scan will wait for results from all the Scanners and may take a lot of time.</p>
+        <p>Selecting simplified output would simplify the output and delete certain unnecessary attributes.</p>
+        <h3>Output</h3> 
+        <dl class="message-properties">
+            <dd>It contains the VirusTotal and Falcon Sandbox reports info for a given file.</dd>    
+            <pre>  
+{
+     ...
+ "scanners":[
+    {
+        "name":"VirusTotal",
+        "status":"clean",
+     ...
+        },
+    {
+        "name":"Metadefender",
+     ...
+        },
+    {
+        "name":"CrowdStrike Falcon Static Analysis (ML)",
+     ...
+        }],
+ "whitelist":[
+        {
+            "id":"internal",
+            "value":false
+            }
+                 ],
+ "reports":["xxx"],
+ "finished":true}
+            </pre>           
+        </dl>
+        <p>The node would save the results in <code>msg.payload</code> by default but if you want to specify another path you can specify it in the Output field. </br> Eg: <code>msg.ha_file</code></p>
+
+    <h3>Other Information</h3> 
+        <dl class="message-properties">
+            <dd>For more information about hybrid analysis API-key and APIs, please visit: https://www.hybrid-analysis.com/docs/api/v2.</dd>    
+        </dl>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('scan file', {
+        category: 'hybridanalysis',
+        color: "rgba(162, 133, 210, 0.2)",
+        defaults: {
+            name: { value: "" },
+            input: {
+                value: ""
+            },
+            output: {
+                value: ""
+            },
+            server: {
+                value: "",
+                type: "falcon-sandbox-server",
+                required: true
+            },
+            deep_scan: { 
+                value: false 
+            },
+            simplified_output: { 
+                value: true 
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "hybridanalysis.png",
+        label: function () {
+            return this.name || "scan file";
+        },
+        oneditprepare: function () {
+            $("#node-input-input").typedInput({default:this.propertyType||'msg',types:['msg']});
+            $("#node-input-output").typedInput({default:this.propertyType||'msg',types:['msg']});
+        }
+    });
+</script>

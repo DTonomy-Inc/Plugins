@@ -1,0 +1,107 @@
+<!--
+  Copyright JS Foundation and other contributors, http://js.foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<script type="text/x-red" data-template-name="search hash">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i>Name</label>
+        <input type="text" id="node-input-name" placeholder="Search Hash">
+    </div>
+    <div class="form-row">
+        <label for="node-input-input"><i class="fa fa-random"></i> Input</label>
+        <input style="width:auto;" type="text" id="node-input-input" placeholder="">
+    </div>
+    <div class="form-row">
+        <label for="node-input-output"><i class="fa fa-random"></i> Output</label>
+        <input style="width:auto;" type="text" id="node-input-output" placeholder="">
+    </div>
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i>Server</label>
+        <input type="text" id="node-input-server" placeholder="Server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-hash"><i class="fa fa-globe"></i>Hash</label>
+        <input type="text" id="node-input-hash" placeholder="Hash">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="search hash">
+    <p>Get summary for given hash via Hybrid Analysis. </p>
+    <h3>Inputs</h3>
+        <dl class="message-properties">
+            <dt>payload<span class="property-type">object</span></dt>
+            <pre>"2f45757ab30985bff7e41cf211086033bcb0477ebbecc5ebc31b28c2b8395c52"
+(Accepted hash type: MD5, SHA1 or SHA256) 
+            </pre>
+    </dl>
+    <p>Input is configured in <code>msg.payload</code> by default or specified through input field. It can also be configured in the node.<p>
+    <p>It can accept input as a string or a list of strings.</p> 
+
+    <h3>Output</h3> 
+    <dl class="message-properties">
+        <dd>It contains summary for the given hash.</dd>    
+        <pre>  
+[
+    {
+        "job_id": null,
+        "environment_id": null,
+        "environment_description": "Static Analysis",
+        "size": null,
+        "type": null,{
+         ...
+        }
+            ]
+        </pre>           
+    </dl>
+    <p>The node would save the results in <code>msg.payload</code> by default but if you want to specify another path you can specify it in the Output field. </br> Eg: <code>msg.result</code></p>
+    
+    <h3>Other Information</h3> 
+        <dl class="message-properties">
+            <dd>For more information about hybrid analysis API-key and APIs, please visit: https://www.hybrid-analysis.com/docs/api/v2.</dd>    
+        </dl>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('search hash', {
+        category: 'hybridanalysis',
+        color: "rgba(162, 133, 210, 0.2)",
+        defaults: {
+            name: { value: "" },
+            input: {
+                value: ""
+            },
+            output: {
+                value: ""
+            },
+            server: {
+                value: "",
+                type: "falcon-sandbox-server",
+                required: true
+            },
+            hash: {
+                value: ""
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "hybridanalysis.png",
+        label: function () {
+            return this.name || "search hash";
+        },
+        oneditprepare: function () {
+            $("#node-input-input").typedInput({default:this.propertyType||'msg',types:['msg']});
+            $("#node-input-output").typedInput({default:this.propertyType||'msg',types:['msg']});
+        }
+    });
+</script>

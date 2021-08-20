@@ -1,0 +1,98 @@
+<!--
+  Copyright JS Foundation and other contributors, http://js.foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<script type="text/x-red" data-template-name="check ip">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i>Name</label>
+        <input type="text" id="node-input-name" placeholder="Check IP">
+    </div>
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i>Server</label>
+        <input type="text" id="node-input-server" placeholder="Server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-input"><i class="fa fa-random"></i> Input</label>
+        <input type="text" id="node-input-input" placeholder="e.g. input">
+    </div>
+    <div class="form-row">
+        <label for="node-input-output"><i class="fa fa-random"></i> Output</label>
+        <input type="text" id="node-input-output" placeholder="e.g. result">
+    </div>
+    <div class="form-row">
+        <input type="checkbox" id="node-input-simplified_output" style="display: inline-block; width: auto; vertical-align: top;">
+        <label style="width: auto;" for="node-input-simplified_output"><span>Simplify output</span></label></input>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="check ip">
+    <p>Check ip via virustotal.</p>
+    <h3>Inputs</h3>
+    <p>The node expects input from <code>msg.payload</code> by default but if you want to specify another path you can specify it in the Input field. 
+    </br>example: Type <code>input</code> in the Input field.
+    </br><code>msg.ips</code> example:
+        <pre> 
+["1.1.1.1","192.168.0.0","10.5.57.64"] 
+        </pre>
+        <dl class="message-properties">
+            <dt>payload<span class="property-type">object</span></dt>
+            <dd>example:</dd>
+            <pre>  
+"192.168.26.1"
+            </pre>
+        </dl>
+    </p>
+
+    <h3>Output</h3>
+    <p>The node expects output from <code>msg.payload</code> by default but if you want to specify another path you can specify it in the Output field. 
+    </br>example: Type <code>result</code> in the Output field.</p> 
+
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('check ip', {
+        category: 'virustotal-function',
+        color: "#E6E0F8",
+        defaults: {
+            name: { value: "" },
+            server: {
+                value: "",
+                type: "virus-total-server",
+                required: true
+            },
+            ip: {
+                value: ""
+            },
+            input:{
+                value: ""
+            },
+            output:{
+                value: "payload"
+            },
+            simplified_output: { 
+                value: true 
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "virustotal.png",
+        label: function () {
+            return this.name || "check ip";
+        },
+        oneditprepare: function () {
+            $("#node-input-input").typedInput({default:this.propertyType||'msg',types:['msg']});
+            $("#node-input-output").typedInput({default:this.propertyType||'msg',types:['msg']});
+        }
+    });
+</script>

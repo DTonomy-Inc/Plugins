@@ -152,7 +152,7 @@ Distributed under the Apache-2.0 License. See `LICENSE` for more information.
 
 DTonomy: [https://www.dtonomy.com](https://www.dtonomy.com)
 
-Project Link: [https://github.com/dtonomy/plugins](https://github.com/dtonomy/plugins)
+Project Link: [https://github.com/dtonomy/plugins](https://github.com/DTonomy-Inc/Plugins)
 
 
 

@@ -1,0 +1,22 @@
+{
+  "name": "node-red-node-hybridanalysis",
+  "version": "1.0.3",
+  "description": "",
+  "node-red" : {
+        "nodes": {
+            "scan url": "scanUrl.js",
+            "scan url to file": "scanUrlToFile.js",
+            "search hash": "searchHash.js",
+            "scan ip": "scanIp.js",
+            "scan file": "scanFile.js",
+            "falconSandboxServer": "falconSandboxServer.js"
+        }
+    },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": ["node-red","hybird-analysis"],
+  "homepage": "https://www.dtonomy.com/"
+}
