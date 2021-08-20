@@ -1,0 +1,23 @@
+{
+  "name": "node-red-contrib-connectwise",
+  "version": "0.0.3",
+  "description": "Provides connectwise functionality in node-red",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rohit Khatu <rkhatu@dtonomy.com>",
+  "license": "ISC",
+  "node-red": {
+    "nodes": {
+      "connectwise": "connectwise.js",
+      "connectwise server": "connectwiseserver.js"
+    }
+  },
+  "keywords": [
+    "node-red",
+    "connectwise"
+  ],
+  "dependencies": {
+    "connectwise-rest": "^0.24.0"
+  }
+}

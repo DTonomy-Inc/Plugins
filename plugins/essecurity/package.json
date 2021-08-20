@@ -1,0 +1,18 @@
+{
+  "name": "elasticsecurity",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "node-red": {
+    "nodes": {
+      "elastic security-server": "elasticSearchServer.js",
+      "get signals": "securitySignals.js",
+      "resolve signals" : "updateSignalStatus.js"
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

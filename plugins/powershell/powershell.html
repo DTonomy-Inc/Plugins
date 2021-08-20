@@ -1,0 +1,152 @@
+<script type="text/javascript">
+    RED.nodes.registerType('powershell', {
+        category: 'advanced',
+        color: '#487EDC',
+        defaults: {
+            name: {
+                value: ""
+            },
+            username: {
+                value: ""
+            },
+            password: {
+                value: ""
+            },
+            func: {
+                value:"" 
+            },
+            noerr: {
+                value: 0,
+                required: true,
+                validate: function (v) {
+                    return ((!v) || (v === 0)) ? true : false;
+                }
+            }
+        },
+        inputs: 1,
+        outputs: 2,
+        icon: "icon.png",
+        outputLabels: ["stdout","stderr"],
+        label: function() {
+            return this.name || "powershell"
+        },
+        labelStyle: function () {
+            return this.name ? "node_label_italic" : "";
+        },
+        oneditprepare: function () {
+            var that = this;
+
+            this.editor = RED.editor.createEditor({
+                id: 'node-input-func-editor',
+                mode: 'ace/mode/powershell',
+                value: $("#node-input-func").val(),
+                globals: {
+                    msg: true,
+                    context: true,
+                    RED: true,
+                    util: true,
+                    flow: true,
+                    global: true,
+                    console: true,
+                    Buffer: true,
+                    setTimeout: true,
+                    clearTimeout: true,
+                    setInterval: true,
+                    clearInterval: true
+                }
+            });
+
+            this.editor.focus();
+        },
+        oneditsave: function () {
+            var annot = this.editor.getSession().getAnnotations();
+            this.noerr = 0;
+            $("#node-input-noerr").val(0);
+            for (var k = 0; k < annot.length; k++) {
+                //console.log(annot[k].type,":",annot[k].text, "on line", annot[k].row);
+                if (annot[k].type === "error") {
+                    $("#node-input-noerr").val(annot.length);
+                    this.noerr = annot.length;
+                }
+            }
+            $("#node-input-func").val(this.editor.getValue());
+            this.editor.destroy();
+            delete this.editor;
+        },
+        oneditcancel: function () {
+            this.editor.destroy();
+            delete this.editor;
+        },
+        oneditresize: function (size) {
+            var rows = $("#dialog-form>div:not(.node-text-editor-row)");
+            var height = $("#dialog-form").height();
+            for (var i = 0; i < rows.size(); i++) {
+                height -= $(rows[i]).outerHeight(true);
+            }
+            var editorRow = $("#dialog-form>div.node-text-editor-row");
+            height -= (parseInt(editorRow.css("marginTop")) + parseInt(editorRow.css("marginBottom")));
+            $(".node-text-editor").css("height", height + "px");
+            this.editor.resize();
+        }
+    });
+
+</script>
+
+
+<script type="text/xred" data-template-name="powershell">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-username"><i class="icon-tag"></i> Username</label>
+        <input type="text" id="node-input-username" placeholder="Username">
+      </div>
+      <div class="form-row">
+        <label for="node-input-password"><i class="fa fa-globe"></i> Password</label>
+        <input type="password" id="node-input-password" placeholder="Password">
+      </div>
+    <div class="form-row" style="margin-bottom: 0px;">
+        <label for="node-input-func"><i class="fa fa-wrench"></i>&nbsp;Script </label>
+        <input type="hidden" id="node-input-func" autofocus="autofocus">
+        <input type="hidden" id="node-input-noerr">
+    </div>
+    <div class="form-row node-text-editor-row">
+        <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-func-editor" ></div>
+    </div>
+</script>
+
+
+<script type="text/x-red" data-help-name="powershell">
+    <p>A simple node that wraps node-powershell features</p>
+    <p><dt>Name:</dt> Unique Name for the node.</p>
+    <p><dt>Username:</dt> Value for Username field is assigned to variable <span style="color: red">%</span><span style="color: blue">username</span><span style="color: red">%</span>.<br> The variable <span style="color: blue">username</span> must be embedded inside <span style="color: red">%</span> symbol as shown above.</p>
+    <p><dt>Password:</dt> Value for Username field is assigned to variable <span style="color: red">%</span><span style="color: blue">password</span><span style="color: red">%</span>.<br> The variable <span style="color: blue">password</span> must be embedded inside <span style="color: red">%</span> symbol as shown above.</p>
+    <p><dt>Script:</dt> Script editor for powershell script.</p>
+    <h3>Inputs</h3>
+        <dl class="message-properties">
+            <dt>payload
+                <span class="property-type">string</span>
+            </dt>
+            <dd> the commands to execute in a single string.</dd>
+        </dl>
+
+
+    <h3>Outputs</h3>
+        <ol class="node-ports">
+            <li>Standard output
+                <dl class="message-properties">
+                    <dt>payload <span class="property-type">string</span></dt>
+                    <dd>the standard output of the shell.</dd>
+                </dl>
+            </li>
+            <li>Standard error
+                <dl class="message-properties">
+                    <dt>payload <span class="property-type">string</span></dt>
+                    <dd>the standard error of the shell.</dd>
+                </dl>
+            </li>
+        </ol>
+
+    
+</script>

@@ -1,0 +1,22 @@
+{
+  "name": "node-red-contrib-powershell",
+  "version": "0.0.3",
+  "description": "Provides powershell functionality in node-red",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tobias Soltermann <tobias.soltermann@gmail.com>",
+  "license": "ISC",
+  "node-red": {
+    "nodes": {
+      "powershell": "powershell.js"
+    }
+  },
+  "keywords": [
+    "node-red",
+    "powershell"
+  ],
+  "dependencies": {
+    "node-powershell": "^3.3.1"
+  }
+}
